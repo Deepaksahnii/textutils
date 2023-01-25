@@ -1,32 +1,42 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react';
 
 export default function TextForm(props) {
     const [text, setText] = useState("")
     
     const handleUpClick = () => {
         let newText = text.toUpperCase();
-        setText(newText);
+      setText(newText);
+      props.showAlert("success", "Converted to upper case.");
     }
     const handleLowClick = () => {
         let newText = text.toLowerCase();
-        setText(newText);
+      setText(newText);
+      props.showAlert("success", "Converted to lower case.");
     }
     const handleExtraClick = () => {
       let newText = text.replace(/\s+/g, ' ').trim();
       setText(newText);
+      props.showAlert("success", "Extra spaces removed.");
     }
     const handleCopyClick = () => {
       navigator.clipboard.writeText(text)
-      alert("Text Copied");
-    }
-  const handleEmail = () => {
-      let regx= text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi)
-    let newText = (regx) ? regx.join("\n") : "not matched.";
-        setText(newText);
+      props.showAlert("success", "Text copied.");
     }
     const handleClearClick = () => {
         let newText = "";
-        setText(newText);
+      setText(newText);
+      props.showAlert("success", "Text cleared.");
+    }
+  const handleEmail = () => {
+      let regx= text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi)
+    let newText = (regx) ? regx.join("\n") : "";
+    setText(newText);
+    if(regx) {
+      props.showAlert("success", "Email extracted");
+    }
+    else {
+      props.showAlert("warning", "No emails found.");
+    }
     }
     const handleOnChange = (event) => {
         setText(event.target.value)
